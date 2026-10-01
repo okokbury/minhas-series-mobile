@@ -9,12 +9,12 @@ const FILTROS: { valor: SerieFilter; label: string }[] = [
   { valor: 'concluidas', label: 'Concluídas' },
 ];
 
-export default function ListaLivros() {
-  const [livros, setLivros] = useState<Serie[]>([]);
+export default function ListaSeries() {
+  const [series, setSeries] = useState<Serie[]>([]);
   const [filtro, setFiltro] = useState<SerieFilter>('todas');
   useFocusEffect(
     useCallback(() => {
-      getSeries(filtro).then(setLivros);
+      getSeries(filtro).then(setSeries);
     }, [filtro])
   );
 
@@ -43,30 +43,29 @@ export default function ListaLivros() {
         onPress={() => router.push('/form')}
         className="bg-green-600 rounded-lg p-3 mb-4"
       >
-        <Text className="text-white text-center font-bold">+ Novo livro</Text>
+        <Text className="text-white text-center font-bold">+ Nova Serie</Text>
       </Pressable>
 
 
       <FlatList
-        data={livros}
+        data={series}
         keyExtractor={(item) => String(item.id)}
         ListEmptyComponent={
-          <Text className="text-center text-gray-500 mt-8">Nenhum livro aqui ainda.</Text>
+          <Text className="text-center text-gray-500 mt-8">Nenhuma serie aqui ainda.</Text>
         }
         renderItem={({ item }) => {
-          const lido = item.concluida === 1;
+          const concluida = item.concluida === 1;
           return (
             <Pressable
               onPress={() => router.push(`/detalhe?id=${item.id}`)}
-              className={`bg-white rounded-lg p-4 mb-3 border-l-4 ${lido ? 'opacity-60 border-green-500' : 'border-blue-500'
+              className={`bg-white rounded-lg p-4 mb-3 border-l-4 ${concluida ? 'opacity-60 border-green-500' : 'border-blue-500'
                 }`}
             >
-              <Text className={`text-lg font-bold ${lido ? 'line-through' : ''}`}>
+              <Text className={`text-lg font-bold ${concluida ? 'line-through' : ''}`}>
                 {item.titulo}
               </Text>
               <Text className="text-gray-600">Disponivel em: {item.plataforma}</Text>
               <Text className="text-gray-600">{item.temporadas} temporadas</Text>
-              <Text className="text-gray-600">Nota: {item.nota}/5</Text>
               <Text className="text-yellow-600">
                 {item.nota != null ? `Nota: ${item.nota}/5` : 'Sem nota'}
               </Text>
