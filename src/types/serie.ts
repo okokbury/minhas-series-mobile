@@ -3,7 +3,7 @@ export interface Serie {
     titulo: string;
     plataforma: string;
     temporadas: number;
-    nota: number|null;
+    nota: number | null;
     concluida: number;
     createdAt: string;
 }

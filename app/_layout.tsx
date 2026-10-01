@@ -1,4 +1,4 @@
-import '../global.css';
+import '../global.css'; //descobri q esse erro eh fake erro, funciona normal no app
 import { useEffect, useState } from 'react';
 import { Stack } from 'expo-router';
 import { runMigrations } from '../src/database/database';
@@ -8,7 +8,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     runMigrations()
-    // confirma se a tabela ta la
+      // confirma se a tabela ta la
       .then(() => setPronto(true))
       .catch((e) => console.error('Erro nas migrations', e));
   }, []);

@@ -27,9 +27,8 @@ export default function ListaLivros() {
             <Pressable
               key={f.valor}
               onPress={() => setFiltro(f.valor)}
-              className={`px-4 py-2 rounded-full border ${
-                ativo ? 'bg-blue-600 border-blue-600' : 'bg-white border-gray-300'
-              }`}
+              className={`px-4 py-2 rounded-full border ${ativo ? 'bg-blue-600 border-blue-600' : 'bg-white border-gray-300'
+                }`}
             >
               <Text className={ativo ? 'text-white font-bold' : 'text-gray-700'}>
                 {f.label}
@@ -59,9 +58,8 @@ export default function ListaLivros() {
           return (
             <Pressable
               onPress={() => router.push(`/detalhe?id=${item.id}`)}
-              className={`bg-white rounded-lg p-4 mb-3 border-l-4 ${
-                lido ? 'opacity-60 border-green-500' : 'border-blue-500'
-              }`}
+              className={`bg-white rounded-lg p-4 mb-3 border-l-4 ${lido ? 'opacity-60 border-green-500' : 'border-blue-500'
+                }`}
             >
               <Text className={`text-lg font-bold ${lido ? 'line-through' : ''}`}>
                 {item.titulo}
