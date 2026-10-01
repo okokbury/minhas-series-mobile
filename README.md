@@ -41,7 +41,7 @@ Passos que eu fiz:
 
 | Antes de fechar | Depois de reabrir | Filtro "Concluídas" |
 | --- | --- | --- |
-| ![antes](fotos/antes.jpg) | ![depois](fotos/depois.jpg) | ![filtro](fotos/filtro.jpg) |
+| ![antes](fotos/antes.jpeg) | ![depois](fotos/depois.jpeg) | ![filtro](fotos/filtro.jpeg) |
 
 <!-- Ou um link para o vídeo: [Vídeo do teste](link-do-video) -->
 
