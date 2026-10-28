@@ -24,5 +24,12 @@ export async function runMigrations(): Promise<void> {
       concluida INTEGER NOT NULL,
       createdAt TEXT NOT NULL
     );
+    CREATE TABLE IF NOT EXISTS profile (
+      id INTEGER PRIMARY KEY,
+      nome TEXT NOT NULL,
+      email TEXT NOT NULL,
+      fotoUri TEXT,
+      updatedAt TEXT NOT NULL
+    );
   `);
 }
