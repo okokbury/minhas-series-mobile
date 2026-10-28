@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View, Text, TextInput, Pressable, Alert } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { getSerieById, createSerie, updateSerie } from '../src/database/serieRepository';
 
 export default function FormSerie() {
@@ -34,7 +34,7 @@ export default function FormSerie() {
             return;
         }
         const temporadasNum = Number(temporadas);
-        if (temporadas.trim() === '' || !Number.isInteger(temporadasNum) || temporadasNum <= 0) {
+        if (temporadas.trim() === '' || !Number.isInteger(temporadasNum) || temporadasNum < 0) {
             Alert.alert('Erro', 'Por favor, informe um número válido de temporadas.');
             return;
         }
@@ -42,7 +42,7 @@ export default function FormSerie() {
             titulo: titulo.trim(),
             plataforma: plataforma.trim(),
             temporadas: temporadasNum,
-            nota: nota ?? 0,
+            nota, // fica null quando não tem nota, para aparecer "Sem nota"
         }
 
         if (editando) {
@@ -57,8 +57,9 @@ export default function FormSerie() {
     }
     return (
     <View className="flex-1 bg-gray-100 p-4">
+      <Stack.Screen options={{ title: editando ? 'Editar série' : 'Nova série' }} />
       <Text className="text-2xl font-bold mb-4">
-        {editando ? 'Editar serie' : 'Novo serie'}
+        {editando ? 'Editar série' : 'Nova série'}
       </Text>
  
       {/* ---------- Campos de texto ---------- */}

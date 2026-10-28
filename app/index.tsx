@@ -1,78 +1,52 @@
-import { useCallback, useState } from 'react';
-import { View, Text, Pressable, FlatList } from 'react-native';
-import { router, useFocusEffect } from 'expo-router';
-import { getSeries } from '../src/database/serieRepository';
-import { Serie, SerieFilter } from '../src/types/serie';
-const FILTROS: { valor: SerieFilter; label: string }[] = [
-  { valor: 'todas', label: 'Todos' },
-  { valor: 'assistindo', label: 'Assistindo' },
-  { valor: 'concluidas', label: 'Concluídas' },
-];
+import { View, Text, Pressable, FlatList, Alert } from 'react-native';
+import { router } from 'expo-router';
+import { useSeries } from '../src/hooks/useSeries';
+import { FilterBar } from '../src/components/FilterBar';
+import { SerieItem } from '../src/components/SerieItem';
+import { EmptyState } from '../src/components/EmptyState';
+import { Serie } from '../src/types/serie';
 
 export default function ListaSeries() {
-  const [series, setSeries] = useState<Serie[]>([]);
-  const [filtro, setFiltro] = useState<SerieFilter>('todas');
-  useFocusEffect(
-    useCallback(() => {
-      getSeries(filtro).then(setSeries);
-    }, [filtro])
-  );
+  const { series, filtro, setFiltro, total, concluidas, alternar, remover } = useSeries();
+
+  function confirmarRemocao(serie: Serie) {
+    Alert.alert('Excluir série', `Excluir "${serie.titulo}"? Não é possível desfazer essa ação.`, [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Excluir', style: 'destructive', onPress: () => remover(serie.id) },
+    ]);
+  }
 
   return (
     <View className="flex-1 bg-gray-100 p-4">
-      <View className="flex-row gap-2 mb-4">
-        {FILTROS.map((f) => {
-          const ativo = f.valor === filtro;
-          return (
-            <Pressable
-              key={f.valor}
-              onPress={() => setFiltro(f.valor)}
-              className={`px-4 py-2 rounded-full border ${ativo ? 'bg-blue-600 border-blue-600' : 'bg-white border-gray-300'
-                }`}
-            >
-              <Text className={ativo ? 'text-white font-bold' : 'text-gray-700'}>
-                {f.label}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </View>
+      {/* contador calculado com COUNT no SQL */}
+      <Text className="text-gray-500 mb-3">
+        {total} série{total === 1 ? '' : 's'} · {concluidas} concluída{concluidas === 1 ? '' : 's'}
+      </Text>
 
-
-      <Pressable
-        onPress={() => router.push('/form')}
-        className="bg-green-600 rounded-lg p-3 mb-4"
-      >
-        <Text className="text-white text-center font-bold">+ Nova Serie</Text>
-      </Pressable>
-
+      <FilterBar filtro={filtro} onChange={setFiltro} />
 
       <FlatList
         data={series}
         keyExtractor={(item) => String(item.id)}
-        ListEmptyComponent={
-          <Text className="text-center text-gray-500 mt-8">Nenhuma serie aqui ainda.</Text>
-        }
-        renderItem={({ item }) => {
-          const concluida = item.concluida === 1;
-          return (
-            <Pressable
-              onPress={() => router.push(`/detalhe?id=${item.id}`)}
-              className={`bg-white rounded-lg p-4 mb-3 border-l-4 ${concluida ? 'opacity-60 border-green-500' : 'border-blue-500'
-                }`}
-            >
-              <Text className={`text-lg font-bold ${concluida ? 'line-through' : ''}`}>
-                {item.titulo}
-              </Text>
-              <Text className="text-gray-600">Disponivel em: {item.plataforma}</Text>
-              <Text className="text-gray-600">{item.temporadas} temporadas</Text>
-              <Text className="text-yellow-600">
-                {item.nota != null ? `Nota: ${item.nota}/5` : 'Sem nota'}
-              </Text>
-            </Pressable>
-          );
-        }}
+        contentContainerStyle={{ paddingBottom: 96 }}
+        ListEmptyComponent={<EmptyState />}
+        renderItem={({ item }) => (
+          <SerieItem
+            serie={item}
+            onPress={() => router.push(`/detalhe?id=${item.id}`)}
+            onAlternar={() => alternar(item.id)}
+            onRemover={() => confirmarRemocao(item)}
+          />
+        )}
       />
+
+      {/* FAB: botão flutuante para cadastrar */}
+      <Pressable
+        onPress={() => router.push('/form')}
+        className="absolute bottom-8 right-6 w-16 h-16 rounded-full bg-green-600 items-center justify-center shadow-lg"
+      >
+        <Text className="text-white text-3xl font-bold">+</Text>
+      </Pressable>
     </View>
   );
 }

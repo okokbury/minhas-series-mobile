@@ -24,7 +24,11 @@ app/
 src/
   types/serie.ts               # Serie, CreateSerieInput, UpdateSerieInput, SerieFilter
   database/database.ts         # conexão singleton, WAL e criação da tabela
-  database/serieRepository.ts  # as 6 funções de acesso ao banco
+  database/serieRepository.ts  # as 6 funções de acesso ao banco + contarSeries (COUNT)
+  hooks/useSeries.ts           # carregar, filtrar, alternar, remover e contadores da lista
+  components/EmptyState.tsx    # estado vazio da lista
+  components/FilterBar.tsx     # os 3 botões de filtro
+  components/SerieItem.tsx     # card da série com botão de concluir
 ```
 
 ## Teste de persistência (Etapa 8)
