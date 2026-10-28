@@ -1,5 +1,5 @@
 import { View, Text, Pressable, FlatList, Alert } from 'react-native';
-import { router } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { useSeries } from '../src/hooks/useSeries';
 import { FilterBar } from '../src/components/FilterBar';
 import { SerieItem } from '../src/components/SerieItem';
@@ -18,6 +18,16 @@ export default function ListaSeries() {
 
   return (
     <View className="flex-1 bg-gray-100 p-4">
+      {/* botão 👤 no header que abre o perfil */}
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <Pressable onPress={() => router.push('/profile')} hitSlop={8}>
+              <Text className="text-2xl">👤</Text>
+            </Pressable>
+          ),
+        }}
+      />
       {/* contador calculado com COUNT no SQL */}
       <Text className="text-gray-500 mb-3">
         {total} série{total === 1 ? '' : 's'} · {concluidas} concluída{concluidas === 1 ? '' : 's'}

@@ -21,6 +21,7 @@ export default function RootLayout() {
       <Stack.Screen name="index" options={{ title: 'Minhas Séries' }} />
       <Stack.Screen name="form" options={{ title: 'Serie' }} />
       <Stack.Screen name="detalhe" options={{ title: 'Detalhes da Série' }} />
+      <Stack.Screen name="profile" options={{ title: 'Meu perfil' }} />
     </Stack>
   );
 }
