@@ -50,3 +50,11 @@ export async function deleteSerie(id: number): Promise<void> {
     const db = await getDatabase();
     await db.runAsync('DELETE FROM series WHERE id = ?', [id]);
 }
+
+export async function contarSeries(): Promise<{ total: number; concluidas: number }> {
+    const db = await getDatabase();
+    const row = await db.getFirstAsync<{ total: number; concluidas: number | null }>(
+        'SELECT COUNT(*) AS total, SUM(concluida) AS concluidas FROM series'
+    );
+    return { total: row?.total ?? 0, concluidas: row?.concluidas ?? 0 };
+}
