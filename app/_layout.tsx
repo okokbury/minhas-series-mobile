@@ -16,7 +16,13 @@ export default function RootLayout() {
   if (!pronto) return null;
 
   return (
-    <Stack>
+    // no iOS 26 o header fica transparente por cima da tela se não tiver cor de fundo
+    <Stack
+      screenOptions={{
+        headerTransparent: false,
+        headerStyle: { backgroundColor: '#ffffff' },
+      }}
+    >
 
       <Stack.Screen name="index" options={{ title: 'Minhas Séries' }} />
       <Stack.Screen name="form" options={{ title: 'Serie' }} />
